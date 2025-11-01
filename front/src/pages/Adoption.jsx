@@ -1,36 +1,13 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-/**
- * Datos de ejemplo. Reemplaza/obtén desde API cuando lo tengas.
- * Usa una única imagen placeholder por el momento.
- */
-const PETS = [
-  { id: 1, name: "Max", desc: "Juguetón y amigable, le encanta correr y jugar.", species: "Perro", size: "Grande", age: "Adulto", sex: "Macho" },
-  { id: 2, name: "Luna", desc: "Una gatita tranquila y cariñosa.", species: "Gato", size: "Pequeño", age: "Cachorro", sex: "Hembra" },
-  { id: 3, name: "Rocky", desc: "Leal y protector. Ideal para familias activas.", species: "Perro", size: "Mediano", age: "Adulto", sex: "Macho" },
-  { id: 4, name: "Bella", desc: "Dulce y gentil, buena con niños.", species: "Perro", size: "Pequeño", age: "Adulto", sex: "Hembra" },
-  { id: 5, name: "Charlie", desc: "Curioso y lleno de energía.", species: "Perro", size: "Mediano", age: "Cachorro", sex: "Macho" },
-  { id: 6, name: "Lucy", desc: "Elegante y serena, le gusta observar desde la ventana.", species: "Gato", size: "Pequeño", age: "Adulto", sex: "Hembra" },
-  { id: 7, name: "Cooper", desc: "Un perro grande con corazón aún más grande.", species: "Perro", size: "Grande", age: "Adulto", sex: "Macho" },
-  { id: 8, name: "Daisy", desc: "Pequeña en tamaño pero grande en personalidad.", species: "Perro", size: "Pequeño", age: "Cachorro", sex: "Hembra" },
-  { id: 9, name: "Milo", desc: "Un gato aventurero que explora la casa.", species: "Gato", size: "Pequeño", age: "Adulto", sex: "Macho" },
-    { id: 10, name: "Sadie", desc: "Cariñosa y siempre lista para un abrazo.", species: "Perro", size: "Mediano", age: "Adulto", sex: "Hembra" },
-    { id: 11, name: "Oliver", desc: "Un gato juguetón que adora las cajas.", species: "Gato", size: "Pequeño", age: "Cachorro", sex: "Macho" },
-    { id: 12, name: "Toby", desc: "Le encanta nadar y jugar al aire libre.", species: "Perro", size: "Grande", age: "Adulto", sex: "Macho" },
-    { id: 13, name: "Chloe", desc: "Una gata elegante con un maullido suave.", species: "Gato", size: "Pequeño", age: "Adulto", sex: "Hembra" },
-    { id: 14, name: "Jack", desc: "Un perro enérgico que necesita mucho ejercicio.", species: "Perro", size: "Mediano", age: "Cachorro", sex: "Macho" },
-    { id: 15, name: "Lily", desc: "Dulce y tranquila, perfecta para un hogar relajado.", species: "Gato", size: "Pequeño", age: "Adulto", sex: "Hembra" },
-    { id: 16, name: "Zeus", desc: "Fuerte y valiente, un gran compañero de aventuras.", species: "Perro", size: "Grande", age: "Adulto", sex: "Macho" },
-    { id: 17, name: "Nala", desc: "Una gata juguetona que adora perseguir luces.", species: "Gato", size: "Pequeño", age: "Cachorro", sex: "Hembra" },  
-    { id: 18, name: "Buster", desc: "Un perro amigable que se lleva bien con todos.", species: "Perro", size: "Mediano", age: "Adulto", sex: "Macho" },
-  // puedes añadir más aquí...
-];
+import { PETS } from "../data/pets";
 
 const PAGE_SIZE = 9;
 
 export default function Adoption() {
+  const navigate = useNavigate();
   const [species, setSpecies] = useState("Todos");
   const [size, setSize] = useState("Todos");
   const [age, setAge] = useState("Todos");
@@ -38,13 +15,11 @@ export default function Adoption() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
 
-  // Opciones dinámicas (puedes ampliarlas o traer desde API)
   const speciesOptions = ["Todos", "Perro", "Gato"];
   const sizeOptions = ["Todos", "Pequeño", "Mediano", "Grande"];
   const ageOptions = ["Todos", "Cachorro", "Adulto", "Senior"];
   const sexOptions = ["Todos", "Macho", "Hembra"];
 
-  // Filtrado
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return PETS.filter((p) => {
@@ -74,7 +49,8 @@ export default function Adoption() {
           <div className="container">
             <h1>Encuentra a tu nuevo mejor amigo</h1>
             <p className="adoption-sub">
-              Explora nuestra galería de mascotas adorables que esperan un hogar amoroso. Usa los filtros para encontrar la pareja perfecta para ti y tu familia.
+              Explora nuestra galería de mascotas adorables que esperan un hogar amoroso. 
+              Usa los filtros para encontrar la pareja perfecta para ti y tu familia.
             </p>
 
             <div className="filters-card" role="search" aria-label="Filtros de adopción">
@@ -129,12 +105,22 @@ export default function Adoption() {
               <p className="no-results">No se encontraron mascotas con esos filtros.</p>
             ) : (
               current.map((p) => (
-                <article key={p.id} className="pet-card" aria-labelledby={`pet-${p.id}-name`}>
+                <article
+                  key={p.id}
+                  className="pet-card"
+                  onClick={() => navigate(`/pet/${p.id}`)}
+                  style={{ cursor: "pointer" }}
+                  aria-label={`Ver detalles de ${p.name}`}
+                >
                   <div className="pet-image-wrap">
-                    <img src="/assets/placeholder-pet.jpg" alt={`${p.name} placeholder`} className="pet-image" />
+                    <img
+                      src="/assets/placeholder-pet.jpg"
+                      alt={p.name}
+                      className="pet-image"
+                    />
                   </div>
                   <div className="pet-info">
-                    <h4 id={`pet-${p.id}-name`}>{p.name}</h4>
+                    <h4>{p.name}</h4>
                     <p className="pet-desc">{p.desc}</p>
                   </div>
                 </article>
@@ -143,9 +129,9 @@ export default function Adoption() {
           </div>
 
           <div className="pagination">
-            <button className="page-btn" onClick={() => goToPage(page - 1)} aria-label="Página anterior" disabled={page === 1}>‹</button>
+            <button className="page-btn" onClick={() => goToPage(page - 1)} disabled={page === 1}>‹</button>
             <span className="page-indicator">{page} / {totalPages}</span>
-            <button className="page-btn" onClick={() => goToPage(page + 1)} aria-label="Página siguiente" disabled={page === totalPages}>›</button>
+            <button className="page-btn" onClick={() => goToPage(page + 1)} disabled={page === totalPages}>›</button>
           </div>
         </section>
       </main>
