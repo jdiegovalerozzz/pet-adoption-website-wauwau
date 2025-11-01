@@ -20,8 +20,8 @@ export default function Navbar() {
         </div>
 
         <nav className="nav-right" role="navigation" aria-label="Main navigation">
-          <a href="#">Inicio</a>
-          <a href="#">Adoptar</a>
+          <a href="/">Inicio</a>
+          <a href="/adopt">Adoptar</a>
           <a href="#">Cuidados</a>
           <a href="#">Información</a>
         </nav>
