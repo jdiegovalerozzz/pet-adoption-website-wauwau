@@ -1,11 +1,18 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { PETS } from "../data/pets"; // Importamos los datos locales
 
+import "../styles/base.css";
+import "../styles/navbar.css";
+import "../styles/petDetail.css";
+import "../styles/footer.css";
+
+
 export default function PetDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const pet = PETS.find((p) => p.id === Number(id));
 
   if (!pet) {
@@ -59,9 +66,15 @@ export default function PetDetail() {
             </div>
 
             <div className="pet-actions">
-              <button className="cta-btn">Adoptar</button>
+              <button
+                className="cta-btn"
+                onClick={() => navigate(`/adopt/form/${pet.id}`)}
+              >
+                Adoptar
+              </button>
               <button className="outline-btn">Contactar</button>
             </div>
+
           </div>
         </section>
       </main>

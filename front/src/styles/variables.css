@@ -1,0 +1,9 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-muted: #555555;
+  --color-border: #e6e6e6;
+  --color-accent: #000000;
+  --nav-height: 80px;
+  --max-width: 1180px;
+}
