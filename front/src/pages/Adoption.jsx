@@ -4,6 +4,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { PETS } from "../data/pets";
 
+import "../styles/base.css";
+import "../styles/navbar.css";
+import "../styles/adoption.css";
+import "../styles/footer.css";
+
+
 const PAGE_SIZE = 9;
 
 export default function Adoption() {

@@ -1,0 +1,88 @@
+/* ---------- ABOUT SECTION ---------- */
+.about {
+  background: var(--color-bg);
+  padding: 90px 0;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 50px;
+  align-items: center;
+}
+
+.about-text p {
+  font-size: 1.05rem;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.about-photo {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+/* ---------- CARE SECTION ---------- */
+.care-info {
+  background: #fafafa;
+  padding: 90px 0;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.video-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+}
+
+.video-frame {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .about-photo {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
