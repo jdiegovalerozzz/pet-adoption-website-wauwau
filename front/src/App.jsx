@@ -5,6 +5,8 @@ import Adoption from "./pages/Adoption";
 import PetDetail from "./pages/PetDetail";
 import AdoptionFormP1 from "./pages/AdoptionFormP1";
 import AdoptionFormP2 from "./pages/AdoptionFormP2";
+import Items from "./pages/Items";
+import ItemDetail from "./pages/ItemDetail";
 
 import "./styles/base.css";
 import "./styles/navbar.css";
@@ -20,6 +22,8 @@ function App() {
         <Route path="/pet/:id" element={<PetDetail />} />
         <Route path="/adopt/form/:id" element={<AdoptionFormP1 />} />
         <Route path="/adopt/form/:id/page2" element={<AdoptionFormP2 />} />
+        <Route path="/items" element={<Items />} />
+        <Route path="/items/:id" element={<ItemDetail />} />
       </Routes>
     </BrowserRouter>
   );

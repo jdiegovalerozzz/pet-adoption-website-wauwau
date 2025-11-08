@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="hero" aria-label="Hero">
       <div className="hero-grid">
@@ -16,7 +19,7 @@ export default function HeroSection() {
           </p>
 
           <div className="hero-cta">
-            <button className="cta-btn">¡Adoptar ya!</button>
+            <button className="cta-btn" onClick={()=>navigate("/adopt")}>¡Adoptar ya!</button>
           </div>
         </div>
 
