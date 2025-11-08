@@ -7,6 +7,8 @@ import AdoptionFormP1 from "./pages/AdoptionFormP1";
 import AdoptionFormP2 from "./pages/AdoptionFormP2";
 import Items from "./pages/Items";
 import ItemDetail from "./pages/ItemDetail";
+import ItemForm from "./pages/ItemForm";
+import PaymentForm from "./pages/PaymentForm";
 
 import "./styles/base.css";
 import "./styles/navbar.css";
@@ -24,6 +26,8 @@ function App() {
         <Route path="/adopt/form/:id/page2" element={<AdoptionFormP2 />} />
         <Route path="/items" element={<Items />} />
         <Route path="/items/:id" element={<ItemDetail />} />
+        <Route path="/form/item/:id" element={<ItemForm />} />
+        <Route path="/form/payment" element={<PaymentForm />} />
       </Routes>
     </BrowserRouter>
   );

@@ -60,7 +60,8 @@ export default function ItemDetail() {
             </div>
 
             <div className="item-actions">
-              <button className="cta-btn">Comprar</button>
+              <button className="cta-btn" 
+                onClick={() => navigate(`/form/item/${item.id}`, { state: { item } })}>Comprar</button>
               <button
                 className="outline-btn"
                 onClick={() => navigate(-1)}
