@@ -9,6 +9,7 @@ import Items from "./pages/Items";
 import ItemDetail from "./pages/ItemDetail";
 import ItemForm from "./pages/ItemForm";
 import PaymentForm from "./pages/PaymentForm";
+import Information from "./pages/Information";
 
 import "./styles/base.css";
 import "./styles/navbar.css";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/items/:id" element={<ItemDetail />} />
         <Route path="/form/item/:id" element={<ItemForm />} />
         <Route path="/form/payment" element={<PaymentForm />} />
+        <Route path="/info" element={<Information />} />
       </Routes>
     </BrowserRouter>
   );

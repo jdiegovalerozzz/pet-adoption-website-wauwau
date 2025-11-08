@@ -28,7 +28,10 @@ function CareSection() {
         </div>
       </div>
 
-      <button className="see-more">Ver consejos completos</button>
+      <button className="see-more"
+        onClick={()=>
+        (window.location.href = "/info#care-section")
+        }>Ver consejos completos</button>
     </section>
   );
 }

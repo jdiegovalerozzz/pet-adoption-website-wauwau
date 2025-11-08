@@ -23,7 +23,7 @@ export default function Navbar() {
           <a href="/">Inicio</a>
           <a href="/adopt">Adoptar</a>
           <a href="/items">Cuidados</a>
-          <a href="#">Información</a>
+          <a href="/info">Información</a>
         </nav>
       </div>
     </header>
