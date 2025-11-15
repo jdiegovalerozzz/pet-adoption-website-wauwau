@@ -14,9 +14,21 @@ ORDER BY nombre
 `;
 
 const SELECT_PRODUCTS_BY_ID = `
-SELECT id_producto, nombre, descripcion, categoria, servicio_productos
+SELECT id_producto, nombre, descripcion, categoria
 FROM producto
 WHERE id_producto = $1
+`;
+
+const LIST_SERVICES = `
+SELECT id_servicio, nombre, descripcion, categoria
+FROM servicio
+ORDER BY nombre
+`;
+
+const SELECT_SERVICES_BY_ID = `
+SELECT id_servicio, nombre, descripcion, categoria
+FROM servicio
+WHERE id_servicio = $1
 `;
 
 const SELECT_PET_BY_ID = `
@@ -42,6 +54,10 @@ const INSERT_SOLICITUD = `INSERT INTO solicitud_adopcion (
 
 module.exports = {
   LIST_PETS,
+  LIST_PRODUCTS,
+  SELECT_PRODUCTS_BY_ID,
+  LIST_SERVICES,
+  SELECT_SERVICES_BY_ID,
   SELECT_PET_BY_ID,
   SELECT_PET_IMAGES,
   SELECT_USER_BY_EMAIL,
