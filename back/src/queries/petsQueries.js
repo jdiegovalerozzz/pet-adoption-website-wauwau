@@ -7,6 +7,18 @@ WHERE disponible = true
 ORDER BY fecha_ingreso DESC
 `;
 
+const LIST_PRODUCTS = `
+SELECT id_producto, nombre, descripcion, categoria, servicio_productos
+FROM producto
+ORDER BY nombre
+`;
+
+const SELECT_PRODUCTS_BY_ID = `
+SELECT id_producto, nombre, descripcion, categoria, servicio_productos
+FROM producto
+WHERE id_producto = $1
+`;
+
 const SELECT_PET_BY_ID = `
 SELECT id_mascota, nombre, especie, edad, genero, descripcion, disponible, foto_url, refugio_id, fecha_ingreso
 FROM mascota
@@ -26,6 +38,7 @@ const INSERT_SOLICITUD = `INSERT INTO solicitud_adopcion (
   direccion_contacto, estado, ciudad, codigo_postal, conyuge,
   adoption_timeline, household_composition, condiciones_hogar, familiarity_level, pendiente
 ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16, true) RETURNING id_solicitud, fecha_solicitud`;
+
 
 module.exports = {
   LIST_PETS,
