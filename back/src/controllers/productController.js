@@ -39,4 +39,65 @@ async function getProduct(req, res, next) {
   }
 }
 
-module.exports = { listProducts, getProduct };
+async function createSell(req, res, next) {
+  const productId = req.params.id;
+  const {
+    nombre_contacto,
+    apellido_contacto,
+    correo_contacto,
+    telefono_contacto,
+    direccion_contacto,
+    estado,
+    ciudad,
+    codigo_postal,
+    cantidad,
+    precio,
+    accept_terms
+  } = req.body;
+
+  try {
+    const productQ = await db.query(queries.SELECT_PRODUCT_EXISTS, [productId]);
+    if (productQ.rowCount === 0) return res.status(404).json({ error: 'Product not found' });
+
+    let usuarioId = null;
+    if (correo_contacto) {
+      const userQ = await db.query(queries.SELECT_USER_BY_EMAIL, [correo_contacto]);
+      if (userQ.rowCount > 0) {
+        usuarioId = userQ.rows[0].id_usuario;
+      } else {
+        const fullName = [nombre_contacto, apellido_contacto].filter(Boolean).join(' ').trim() || nombre_contacto || null;
+        const addressFull = [direccion_contacto, ciudad, estado, codigo_postal].filter(Boolean).join(', ');
+        const insertUserQ = await db.query(queries.INSERT_USER, [fullName, correo_contacto || null, telefono_contacto || null, addressFull || null]);
+        usuarioId = insertUserQ.rows[0].id_usuario;
+      }
+    }
+
+    if (accept_terms !== true) return res.status(400).json({ error: 'Terms must be accepted' });
+
+    const contactAddress = direccion_contacto || [direccion_contacto, ciudad, estado, codigo_postal].filter(Boolean).join(', ');
+
+    const qty = cantidad ? Number(cantidad) : 1;
+    const priceVal = precio !== undefined ? Number(precio) : null;
+
+    const { rows } = await db.query(queries.INSERT_SELL, [
+      usuarioId,
+      productId,
+      nombre_contacto || null,
+      apellido_contacto || null,
+      correo_contacto || null,
+      telefono_contacto || null,
+      contactAddress || null,
+      estado || null,
+      ciudad || null,
+      codigo_postal || null,
+      qty,
+      priceVal
+    ]);
+
+    res.status(201).json({ id_venta: rows[0].id_venta, usuario_id: usuarioId, fecha_venta: rows[0].fecha_venta, status: 'pending' });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { listProducts, getProduct, createSell };

@@ -19,6 +19,22 @@ FROM producto
 WHERE id_producto = $1
 `;
 
+
+const SELECT_PRODUCT_SERVICES = `
+SELECT s.id_servicio, s.nombre, s.descripcion
+FROM servicio s
+JOIN producto_servicio ps ON ps.servicio_id = s.id_servicio
+WHERE ps.producto_id = $1
+ORDER BY s.nombre
+`;
+
+const SELECT_PRODUCT_EXISTS = `SELECT id_producto FROM producto WHERE id_producto = $1`;
+
+const INSERT_SELL = `INSERT INTO venta (
+  usuario_id, producto_id, nombre_contacto, apellido_contacto, correo_contacto, telefono_contacto,
+  direccion_contacto, estado, ciudad, codigo_postal, cantidad, precio, fecha_venta, pendiente
+) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, now(), true) RETURNING id_venta, fecha_venta`;
+
 const LIST_SERVICES = `
 SELECT id_servicio, nombre, descripcion, categoria
 FROM servicio
@@ -64,4 +80,7 @@ module.exports = {
   INSERT_USER,
   INSERT_SOLICITUD,
   SELECT_PET_EXISTS,
+  SELECT_PRODUCT_SERVICES,
+  SELECT_PRODUCT_EXISTS,
+  INSERT_SELL,
 };
