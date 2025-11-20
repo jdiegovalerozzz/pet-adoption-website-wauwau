@@ -1,9 +1,9 @@
 const request = require('supertest');
-const db = require('../src/db');
+const db = require('../../src/db');
 
-jest.mock('../src/db');
+jest.mock('../../src/db');
 
-const app = require('../src/server');
+const app = require('../../src/server');
 
 describe('Integración /api/pets', () => {
   afterEach(() => jest.clearAllMocks());
