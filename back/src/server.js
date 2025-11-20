@@ -2,12 +2,14 @@ const express = require('express');
 require('dotenv').config();
 const petsRouter = require('./routes/pets');
 const sellsRouter = require('./routes/sells');
+const servicesRouter = require('./routes/services');
 
 const app = express();
 app.use(express.json());
 
 app.use('/api/pets', petsRouter);
 app.use('/api/sells', sellsRouter);
+app.use('/api/services', servicesRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);

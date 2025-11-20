@@ -47,6 +47,10 @@ FROM servicio
 WHERE id_servicio = $1
 `;
 
+const INSERT_SERVICE = `INSERT INTO venta_servicio (
+  nombre_contacto, apellido_contacto, telefono_contacto, direccion_contacto, estado, ciudad, precio, fecha_servicio, pendiente
+) VALUES ($1,$2,$3,$4,$5,$6,$7, now(), true) RETURNING servicio_id, fecha_servicio`;
+
 const SELECT_PET_BY_ID = `
 SELECT id_mascota, nombre, especie, edad, genero, descripcion, disponible, foto_url, refugio_id, fecha_ingreso
 FROM mascota
@@ -83,4 +87,5 @@ module.exports = {
   SELECT_PRODUCT_SERVICES,
   SELECT_PRODUCT_EXISTS,
   INSERT_SELL,
+  INSERT_SERVICE,
 };
