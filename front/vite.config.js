@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',
+        target: 'https://pet-adoption-website-wauwau.onrender.com/',
         changeOrigin: true,
         secure: false,
       }
