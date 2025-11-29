@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { ITEMS } from "../data/items";
+import api from "../api";
 
 import "../styles/base.css";
 import "../styles/navbar.css";
@@ -12,31 +12,92 @@ import "../styles/items.css";
 export default function ItemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const item = ITEMS.find((i) => i.id === Number(id));
 
-  if (!item) {
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      setLoading(true);
+      try {
+        const p = await api.fetchProductById(id);
+        const mapped = {
+          id: p.id_producto ?? p.id,
+          name: p.nombre,
+          desc: p.descripcion,
+          price: p.precio ?? p.price ?? "$0.00",
+          image: p.imagen_url ?? "/assets/placeholder-item.jpg",
+          type: p.servicio_productos ? "Service" : "Product",
+        };
+        if (mounted) setItem(mapped);
+      } catch (e) {
+        console.error("Error fetching product", e);
+        if (mounted) setErr(e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
+
+  if (loading) {
     return (
       <div className="site-root">
+        {" "}
         <Navbar />
-        <main className="container" style={{ padding: "4rem 0", textAlign: "center" }}>
-          <h2>Item no encontrado</h2>
-          <Link to="/items" className="cta-btn" style={{ marginTop: "1.5rem", display: "inline-block" }}>
-            Volver al catálogo
-          </Link>
-        </main>
-        <Footer />
+        <main
+          className="container"
+          style={{ padding: "4rem 0", textAlign: "center" }}
+        >
+          {" "}
+          <p>Cargando item…</p>{" "}
+        </main>{" "}
+        <Footer />{" "}
+      </div>
+    );
+  }
+
+  if (!item || err) {
+    return (
+      <div className="site-root">
+        {" "}
+        <Navbar />
+        <main
+          className="container"
+          style={{ padding: "4rem 0", textAlign: "center" }}
+        >
+          {" "}
+          <h2>Item no encontrado</h2>{" "}
+          <p>{err ? err.message : "No se encontró el item."}</p>
+          <Link
+            to="/items"
+            className="cta-btn"
+            style={{ marginTop: "1.5rem", display: "inline-block" }}
+          >
+            Volver al catálogo{" "}
+          </Link>{" "}
+        </main>{" "}
+        <Footer />{" "}
       </div>
     );
   }
 
   return (
     <div className="site-root item-detail-page">
-      <Navbar />
+      {" "}
+      <Navbar />{" "}
       <main className="container item-detail">
+        {" "}
         <nav className="breadcrumb" aria-label="breadcrumb">
-          <Link to="/">Inicio</Link> / <Link to="/items">Cuidados</Link> / <span>{item.name}</span>
+          {" "}
+          <Link to="/">Inicio</Link> / <Link to="/items">Cuidados</Link> /{" "}
+          <span>{item.name}</span>{" "}
         </nav>
-
         <section className="item-detail-grid">
           <div className="item-detail-image">
             <img
@@ -50,8 +111,12 @@ export default function ItemDetail() {
             <h1>{item.name}</h1>
 
             <div className="item-attrs">
-              <div><strong>Tipo:</strong> {item.type}</div>
-              <div><strong>Precio:</strong> {item.price}</div>
+              <div>
+                <strong>Tipo:</strong> {item.type}
+              </div>
+              <div>
+                <strong>Precio:</strong> {item.price}
+              </div>
             </div>
 
             <div className="item-about">
@@ -60,19 +125,21 @@ export default function ItemDetail() {
             </div>
 
             <div className="item-actions">
-              <button className="cta-btn" 
-                onClick={() => navigate(`/form/item/${item.id}`, { state: { item } })}>Comprar</button>
               <button
-                className="outline-btn"
-                onClick={() => navigate(-1)}
+                className="cta-btn"
+                onClick={() =>
+                  navigate(`/form/item/${item.id}`, { state: { item } })
+                }
               >
+                Comprar
+              </button>
+              <button className="outline-btn" onClick={() => navigate(-1)}>
                 Regresar
               </button>
             </div>
           </div>
         </section>
       </main>
-
       <Footer />
     </div>
   );

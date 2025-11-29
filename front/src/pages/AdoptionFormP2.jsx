@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
+import api from "../api";
 
 import "../styles/base.css";
 import "../styles/adoptionForm.css";
@@ -9,7 +11,11 @@ import "../styles/footer.css";
 const AdoptFormPage2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const params = useParams();
+
   const formData = location.state?.formData || {};
+  // petId puede venir por params (/adopt/form/:id/page2) o por state
+  const petId = params.id || location.state?.petId;
 
   const [answers, setAnswers] = useState({
     mayorEdad: "",
@@ -19,6 +25,8 @@ const AdoptFormPage2 = () => {
     familiaridad: "",
     terminos: false,
   });
+
+  const [sending, setSending] = useState(false);
 
   const handleRadio = (e) => {
     setAnswers({ ...answers, [e.target.name]: e.target.value });
@@ -38,19 +46,18 @@ const AdoptFormPage2 = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Formulario completo:", { ...formData, ...answers });
-    alert("Formulario enviado exitosamente (simulación)");
-    navigate("/");
   };
 
   return (
     <div className="adoption-form-page">
+      {" "}
       <div className="form-container">
+        {" "}
         <form className="form-card" onSubmit={handleSubmit}>
+          {" "}
           <h2 className="form-title">
-            Un poco más sobre ti y tu deseo de adoptar
+            Un poco más sobre ti y tu deseo de adoptar{" "}
           </h2>
-
           <div className="form-group">
             <label>¿Certificas que eres mayor de edad?</label>
             <div className="radio-group">
@@ -75,7 +82,6 @@ const AdoptFormPage2 = () => {
               </label>
             </div>
           </div>
-
           <div className="form-group">
             <label>¿Qué tan pronto te gustaría adoptar?</label>
             <div className="radio-group">
@@ -99,7 +105,6 @@ const AdoptFormPage2 = () => {
               ))}
             </div>
           </div>
-
           <div className="form-group">
             <label>¿Cómo es el espacio que compartirán?</label>
             <div className="checkbox-grid">
@@ -122,7 +127,6 @@ const AdoptFormPage2 = () => {
               ))}
             </div>
           </div>
-
           <div className="form-group">
             <label>¿Cómo describirías tu hogar la mayoría de los días?</label>
             <div className="radio-group">
@@ -144,7 +148,6 @@ const AdoptFormPage2 = () => {
               ))}
             </div>
           </div>
-
           <div className="form-group">
             <label>
               ¿Qué tan familiarizado estás con el cuidado de perros? (1 = Nunca
@@ -165,7 +168,6 @@ const AdoptFormPage2 = () => {
               ))}
             </div>
           </div>
-
           <div className="form-group">
             <label className="terms-label">
               <input
@@ -180,7 +182,6 @@ const AdoptFormPage2 = () => {
               Acepto los Términos y Condiciones establecidos
             </label>
           </div>
-
           <div className="form-actions">
             <button
               type="button"
@@ -189,8 +190,8 @@ const AdoptFormPage2 = () => {
             >
               Regresar
             </button>
-            <button type="submit" className="cta-btn">
-              Enviar
+            <button type="submit" className="cta-btn" disabled={sending}>
+              {sending ? "Enviando…" : "Enviar"}
             </button>
           </div>
         </form>

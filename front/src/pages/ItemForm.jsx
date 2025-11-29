@@ -29,7 +29,9 @@ export default function ItemForm() {
   const handleNext = (e) => {
     e.preventDefault();
     if (!item) return;
-    navigate("/form/payment", { state: { item, formData } });
+    // Pasamos item y formData a la pantalla de pago
+    const kind = item.type === "Service" ? "service" : "product";
+    navigate("/form/payment", { state: { item, formData, kind } });
   };
 
   if (!item) {
@@ -39,23 +41,26 @@ export default function ItemForm() {
           className="container"
           style={{ padding: "4rem 0", textAlign: "center" }}
         >
-          <h2>Item no encontrado</h2>
-        </main>
-        <Footer />
+          {" "}
+          <h2>Item no encontrado</h2>{" "}
+        </main>{" "}
+        <Footer />{" "}
       </div>
     );
   }
 
   return (
     <div className="form-page">
+      {" "}
       <div className="form-container">
+        {" "}
         <form className="form-card" onSubmit={handleNext}>
+          {" "}
           <h2 className="form-title">
             {item.type === "Service"
               ? "Información de cita"
-              : "Información de envío"}
+              : "Información de envío"}{" "}
           </h2>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Nombre</label>
@@ -76,7 +81,6 @@ export default function ItemForm() {
               />
             </div>
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Dirección</label>
@@ -97,7 +101,6 @@ export default function ItemForm() {
               />
             </div>
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Estado</label>
@@ -118,7 +121,6 @@ export default function ItemForm() {
               />
             </div>
           </div>
-
           <div className="form-group">
             <label>Correo</label>
             <input
@@ -129,7 +131,6 @@ export default function ItemForm() {
               required
             />
           </div>
-
           {item.type === "Service" && (
             <div className="form-group">
               <label>Fecha de cita preferida</label>
@@ -142,7 +143,6 @@ export default function ItemForm() {
               />
             </div>
           )}
-
           <div className="form-actions">
             <button
               type="button"

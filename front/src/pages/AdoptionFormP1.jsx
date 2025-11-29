@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 
 import "../styles/base.css";
@@ -8,6 +8,11 @@ import "../styles/footer.css";
 
 const AdoptFormPage1 = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const location = useLocation();
+  // petId puede venir en URL params (/adopt/form/:id) o en location.state.petId
+  const petId = params.id || location.state?.petId;
+
   const [formData, setFormData] = useState({
     nombres: "",
     apellidos: "",
@@ -28,17 +33,20 @@ const AdoptFormPage1 = () => {
 
   const handleNext = (e) => {
     e.preventDefault();
-    navigate("/adopt/form/:id/page2", { state: { formData } });
+    // Pasamos petId y formData a la siguiente página en location.state
+    navigate(`/adopt/form/${petId}/page2`, { state: { formData, petId } });
   };
 
   return (
     <div className="adoption-form-page">
+      {" "}
       <div className="form-container">
+        {" "}
         <form className="form-card" onSubmit={handleNext}>
+          {" "}
           <h2 className="form-title">
-            ¡Ayúdanos a acercarte a tu nuevo compañero!
+            ¡Ayúdanos a acercarte a tu nuevo compañero!{" "}
           </h2>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Nombre(s)</label>
@@ -59,7 +67,6 @@ const AdoptFormPage1 = () => {
               />
             </div>
           </div>
-
           <div className="form-group">
             <label>
               Cónyuge/pareja/compañero de habitación que quiera incluir en el
@@ -71,7 +78,6 @@ const AdoptFormPage1 = () => {
               onChange={handleChange}
             />
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Dirección</label>
@@ -92,7 +98,6 @@ const AdoptFormPage1 = () => {
               />
             </div>
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Ciudad</label>
@@ -113,7 +118,6 @@ const AdoptFormPage1 = () => {
               />
             </div>
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Número de teléfono principal</label>
@@ -133,7 +137,6 @@ const AdoptFormPage1 = () => {
               />
             </div>
           </div>
-
           <div className="grid-2">
             <div className="form-group">
               <label>Dirección de correo electrónico principal</label>
@@ -146,7 +149,9 @@ const AdoptFormPage1 = () => {
               />
             </div>
             <div className="form-group">
-              <label>Dirección de correo electrónico secundaria (Opcional)</label>
+              <label>
+                Dirección de correo electrónico secundaria (Opcional)
+              </label>
               <input
                 type="email"
                 name="correoSecundario"
@@ -155,7 +160,6 @@ const AdoptFormPage1 = () => {
               />
             </div>
           </div>
-
           <div className="form-actions">
             <button
               type="button"

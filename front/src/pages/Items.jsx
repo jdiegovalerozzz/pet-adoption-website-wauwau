@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { ITEMS } from "../data/items";
+import api from "../api";
 
 import "../styles/base.css";
 import "../styles/navbar.css";
@@ -17,16 +17,50 @@ export default function Items() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
 
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+
   const typeOptions = ["All", "Product", "Service"];
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      setLoading(true);
+      try {
+        const rows = await api.fetchProducts();
+        // Mapear filas DB -> UI
+        const mapped = (rows || []).map((r) => ({
+          id: r.id_producto ?? r.id ?? r.id_producto,
+          name: r.nombre ?? r.name ?? "",
+          shortDesc: r.descripcion ?? r.shortDesc ?? "",
+          price: r.precio ?? r.price ?? "$0.00",
+          image: r.imagen_url ?? "/assets/placeholder-item.jpg",
+          // heurística: campo servicio_productos (string/bool) indica si es servicio
+          type: r.servicio_productos ? "Service" : "Product",
+        }));
+        if (mounted) setItems(mapped);
+      } catch (e) {
+        console.error("Error fetching items", e);
+        if (mounted) setErr(e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ITEMS.filter((i) => {
+    return items.filter((i) => {
       if (type !== "All" && i.type !== type) return false;
       if (q && !i.name.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [type, query]);
+  }, [items, type, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const current = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -39,17 +73,24 @@ export default function Items() {
 
   return (
     <div className="site-root items-page">
-      <Navbar />
+      {" "}
+      <Navbar />{" "}
       <main>
+        {" "}
         <header className="items-hero">
+          {" "}
           <div className="container">
-            <h1>Servicios y Productos de Cuidado para Mascotas</h1>
+            {" "}
+            <h1>Servicios y Productos de Cuidado para Mascotas</h1>{" "}
             <p className="items-sub">
-              Explore nuestro catálogo de servicios y productos de alta calidad para el cuidado de mascotas.
-              Use los filtros a continuación para encontrar exactamente lo que su mascota necesita.
+              Explore nuestro catálogo de servicios y productos de alta calidad
+              para el cuidado de mascotas.{" "}
             </p>
-
-            <div className="filters-card" role="search" aria-label="Filter items">
+            <div
+              className="filters-card"
+              role="search"
+              aria-label="Filter items"
+            >
               <div className="filters-row">
                 <label>
                   <span>Tipo</span>
@@ -84,13 +125,18 @@ export default function Items() {
             </div>
           </div>
         </header>
-
         <section className="container items-section">
           <h3 className="section-heading">Ofertas Disponibles</h3>
 
           <div className="item-grid">
-            {current.length === 0 ? (
-              <p className="no-results">No hay elementos que coincidan con su búsqueda.</p>
+            {loading ? (
+              <p className="loading">Cargando ofertas…</p>
+            ) : err ? (
+              <p className="error">Error cargando ofertas: {err.message}</p>
+            ) : current.length === 0 ? (
+              <p className="no-results">
+                No hay elementos que coincidan con su búsqueda.
+              </p>
             ) : (
               current.map((item) => (
                 <article
@@ -119,13 +165,26 @@ export default function Items() {
           </div>
 
           <div className="pagination">
-            <button className="page-btn" onClick={() => goToPage(page - 1)} disabled={page === 1}>‹</button>
-            <span className="page-indicator">{page} / {totalPages}</span>
-            <button className="page-btn" onClick={() => goToPage(page + 1)} disabled={page === totalPages}>›</button>
+            <button
+              className="page-btn"
+              onClick={() => goToPage(page - 1)}
+              disabled={page === 1}
+            >
+              ‹
+            </button>
+            <span className="page-indicator">
+              {page} / {totalPages}
+            </span>
+            <button
+              className="page-btn"
+              onClick={() => goToPage(page + 1)}
+              disabled={page === totalPages}
+            >
+              ›
+            </button>
           </div>
         </section>
       </main>
-
       <Footer />
     </div>
   );

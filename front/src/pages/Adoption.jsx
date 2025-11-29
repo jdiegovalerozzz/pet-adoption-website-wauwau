@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { PETS } from "../data/pets";
+import api from "../api";
 
 import "../styles/base.css";
 import "../styles/navbar.css";
 import "../styles/adoption.css";
 import "../styles/footer.css";
-
 
 const PAGE_SIZE = 9;
 
@@ -21,22 +20,57 @@ export default function Adoption() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
 
+  const [pets, setPets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const speciesOptions = ["Todos", "Perro", "Gato"];
   const sizeOptions = ["Todos", "Pequeño", "Mediano", "Grande"];
   const ageOptions = ["Todos", "Cachorro", "Adulto", "Senior"];
   const sexOptions = ["Todos", "Macho", "Hembra"];
 
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      setLoading(true);
+      try {
+        const rows = await api.fetchPets();
+        // Mapear campos DB -> UI
+        const mapped = (rows || []).map((r) => ({
+          id: r.id_mascota ?? r.id ?? r.id_mascota,
+          name: r.nombre ?? r.name ?? "",
+          desc: r.descripcion ?? r.desc ?? "",
+          species: (r.especie ?? "").toString(),
+          age: r.edad ?? "",
+          sex: r.genero ?? r.sex ?? "",
+          size: r.tamano ?? r.size ?? "Mediano",
+          fotos: r.fotos ?? (r.foto_url ? [{ url: r.foto_url }] : []),
+        }));
+        if (mounted) setPets(mapped);
+      } catch (err) {
+        console.error("Error fetching pets:", err);
+        if (mounted) setError(err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PETS.filter((p) => {
+    return pets.filter((p) => {
       if (species !== "Todos" && p.species !== species) return false;
       if (size !== "Todos" && p.size !== size) return false;
       if (age !== "Todos" && p.age !== age) return false;
       if (sex !== "Todos" && p.sex !== sex) return false;
-      if (q && !p.name.toLowerCase().includes(q)) return false;
+      if (q && !p.name?.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [species, size, age, sex, query]);
+  }, [pets, species, size, age, sex, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const current = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -49,43 +83,91 @@ export default function Adoption() {
 
   return (
     <div className="site-root adoption-page">
-      <Navbar />
+      {" "}
+      <Navbar />{" "}
       <main>
+        {" "}
         <header className="adoption-hero">
+          {" "}
           <div className="container">
-            <h1>Encuentra a tu nuevo mejor amigo</h1>
+            {" "}
+            <h1>Encuentra a tu nuevo mejor amigo</h1>{" "}
             <p className="adoption-sub">
-              Explora nuestra galería de mascotas adorables que esperan un hogar amoroso. 
-              Usa los filtros para encontrar la pareja perfecta para ti y tu familia.
+              Explora nuestra galería de mascotas adorables que esperan un hogar
+              amoroso. Usa los filtros para encontrar la pareja perfecta para ti
+              y tu familia.{" "}
             </p>
-
-            <div className="filters-card" role="search" aria-label="Filtros de adopción">
+            <div
+              className="filters-card"
+              role="search"
+              aria-label="Filtros de adopción"
+            >
               <div className="filters-row">
                 <label>
                   <span>Especie</span>
-                  <select value={species} onChange={(e) => { setSpecies(e.target.value); setPage(1); }}>
-                    {speciesOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                  <select
+                    value={species}
+                    onChange={(e) => {
+                      setSpecies(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    {speciesOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
                   </select>
                 </label>
 
                 <label>
                   <span>Tamaño</span>
-                  <select value={size} onChange={(e) => { setSize(e.target.value); setPage(1); }}>
-                    {sizeOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                  <select
+                    value={size}
+                    onChange={(e) => {
+                      setSize(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    {sizeOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
                   </select>
                 </label>
 
                 <label>
                   <span>Edad</span>
-                  <select value={age} onChange={(e) => { setAge(e.target.value); setPage(1); }}>
-                    {ageOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                  <select
+                    value={age}
+                    onChange={(e) => {
+                      setAge(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    {ageOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
                   </select>
                 </label>
 
                 <label>
                   <span>Sexo</span>
-                  <select value={sex} onChange={(e) => { setSex(e.target.value); setPage(1); }}>
-                    {sexOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                  <select
+                    value={sex}
+                    onChange={(e) => {
+                      setSex(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    {sexOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
                   </select>
                 </label>
 
@@ -94,7 +176,10 @@ export default function Adoption() {
                     type="search"
                     placeholder="Buscar por nombre..."
                     value={query}
-                    onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      setPage(1);
+                    }}
                     aria-label="Buscar mascotas por nombre"
                   />
                 </label>
@@ -102,13 +187,20 @@ export default function Adoption() {
             </div>
           </div>
         </header>
-
         <section className="container pets-section">
           <h3 className="section-heading">Mascotas disponibles</h3>
 
           <div className="pet-grid">
-            {current.length === 0 ? (
-              <p className="no-results">No se encontraron mascotas con esos filtros.</p>
+            {loading ? (
+              <p className="loading">Cargando mascotas…</p>
+            ) : error ? (
+              <p className="error">
+                Error cargando mascotas: {error.message || "error"}
+              </p>
+            ) : current.length === 0 ? (
+              <p className="no-results">
+                No se encontraron mascotas con esos filtros.
+              </p>
             ) : (
               current.map((p) => (
                 <article
@@ -120,7 +212,11 @@ export default function Adoption() {
                 >
                   <div className="pet-image-wrap">
                     <img
-                      src="/assets/placeholder-pet.jpg"
+                      src={
+                        p.fotos && p.fotos[0] && p.fotos[0].url
+                          ? p.fotos[0].url
+                          : "/assets/placeholder-pet.jpg"
+                      }
                       alt={p.name}
                       className="pet-image"
                     />
@@ -135,13 +231,26 @@ export default function Adoption() {
           </div>
 
           <div className="pagination">
-            <button className="page-btn" onClick={() => goToPage(page - 1)} disabled={page === 1}>‹</button>
-            <span className="page-indicator">{page} / {totalPages}</span>
-            <button className="page-btn" onClick={() => goToPage(page + 1)} disabled={page === totalPages}>›</button>
+            <button
+              className="page-btn"
+              onClick={() => goToPage(page - 1)}
+              disabled={page === 1}
+            >
+              ‹
+            </button>
+            <span className="page-indicator">
+              {page} / {totalPages}
+            </span>
+            <button
+              className="page-btn"
+              onClick={() => goToPage(page + 1)}
+              disabled={page === totalPages}
+            >
+              ›
+            </button>
           </div>
         </section>
       </main>
-
       <Footer />
     </div>
   );
