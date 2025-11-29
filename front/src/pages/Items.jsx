@@ -86,7 +86,6 @@ export default function Items() {
               Explore nuestro catálogo de servicios y productos de alta calidad
               para el cuidado de mascotas.{" "}
             </p>
-            ```
             <div
               className="filters-card"
               role="search"

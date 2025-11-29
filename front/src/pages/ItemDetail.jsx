@@ -98,7 +98,6 @@ export default function ItemDetail() {
           <Link to="/">Inicio</Link> / <Link to="/items">Cuidados</Link> /{" "}
           <span>{item.name}</span>{" "}
         </nav>
-        ```
         <section className="item-detail-grid">
           <div className="item-detail-image">
             <img

@@ -61,7 +61,6 @@ export default function ItemForm() {
               ? "Información de cita"
               : "Información de envío"}{" "}
           </h2>
-          ```
           <div className="grid-2">
             <div className="form-group">
               <label>Nombre</label>

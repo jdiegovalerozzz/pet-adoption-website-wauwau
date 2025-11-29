@@ -97,7 +97,6 @@ export default function Adoption() {
               amoroso. Usa los filtros para encontrar la pareja perfecta para ti
               y tu familia.{" "}
             </p>
-            ```
             <div
               className="filters-card"
               role="search"

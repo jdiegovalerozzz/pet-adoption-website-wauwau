@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -44,13 +45,6 @@ export default function PetDetail() {
         if (mounted) setLoading(false);
       }
     }
-
-    ```
-// Solo cargar del backend si no hay local
-if (!localPet) load();
-
-return () => { mounted = false; };
-```;
   }, [id, localPet]);
 
   const pet = localPet || petReal;
@@ -131,7 +125,6 @@ return () => { mounted = false; };
           <Link to="/">Inicio</Link> / <Link to="/adopt">Adopción</Link> /{" "}
           <span>{pet.name}</span>{" "}
         </nav>
-        ```
         <section className="pet-detail-grid">
           <div className="pet-detail-image">
             <img

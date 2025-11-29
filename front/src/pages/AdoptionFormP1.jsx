@@ -47,7 +47,6 @@ const AdoptFormPage1 = () => {
           <h2 className="form-title">
             ¡Ayúdanos a acercarte a tu nuevo compañero!{" "}
           </h2>
-          ```
           <div className="grid-2">
             <div className="form-group">
               <label>Nombre(s)</label>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
@@ -57,7 +58,6 @@ const AdoptFormPage2 = () => {
           <h2 className="form-title">
             Un poco más sobre ti y tu deseo de adoptar{" "}
           </h2>
-          ```
           <div className="form-group">
             <label>¿Certificas que eres mayor de edad?</label>
             <div className="radio-group">

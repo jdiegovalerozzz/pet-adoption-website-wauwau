@@ -8,7 +8,7 @@ ORDER BY fecha_ingreso DESC
 `;
 
 const LIST_PRODUCTS = `
-SELECT id_producto, nombre, descripcion, categoria, servicio_productos
+SELECT id_producto, nombre, descripcion, categoria
 FROM producto
 ORDER BY nombre
 `;

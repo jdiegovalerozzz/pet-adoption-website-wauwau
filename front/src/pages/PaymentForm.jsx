@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -76,43 +77,6 @@ export default function PaymentForm() {
       return;
     }
     if (!item) return;
-
-    ```
-// Construir payload para backend
-const payload = {
-  nombre_contacto: formData.firstName || formData.nombres || null,
-  apellido_contacto: formData.lastName || formData.apellidos || null,
-  correo_contacto: formData.email || formData.correoPrincipal || null,
-  telefono_contacto: formData.phone || formData.telefonoPrincipal || null,
-  direccion_contacto: formData.address || formData.direccion || null,
-  estado: formData.state || formData.estado || null,
-  ciudad: formData.city || formData.ciudad || null,
-  codigo_postal: formData.codigoPostal || null,
-  cantidad: 1,
-  precio: usdAmount || null,
-  accept_terms: true
-};
-
-try {
-  setSending(true);
-  let result = null;
-  if (kind === "service" || item.type === "Service") {
-    // Llamar al endpoint de servicios
-    result = await api.createService(item.id, payload);
-  } else {
-    // Producto/venta
-    result = await api.createSell(item.id, payload);
-  }
-  console.log('create result', result);
-  alert('Operación realizada con éxito. ID: ' + (result?.id_venta || result?.servicio_id || 'OK'));
-  navigate('/', { replace: true });
-} catch (err) {
-  console.error('Error creando venta/servicio', err);
-  alert('Error: ' + (err.payload?.error || err.message));
-} finally {
-  setSending(false);
-}
-```;
   };
 
   return (
@@ -130,7 +94,6 @@ try {
               {" "}
               Pedido: <strong>{item?.name}</strong>
             </p>
-            ```
             <div className="grid-2">
               <div className="form-group">
                 <label>R.E.F.</label>

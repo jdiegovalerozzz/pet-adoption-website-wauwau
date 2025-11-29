@@ -15,7 +15,6 @@ import "./styles/base.css";
 import "./styles/navbar.css";
 import "./styles/footer.css";
 
-
 function App() {
   return (
     <BrowserRouter>
