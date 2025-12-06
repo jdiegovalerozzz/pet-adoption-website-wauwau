@@ -156,7 +156,7 @@ export default function Items() {
                   <div className="item-info">
                     <h4>{item.name}</h4>
                     <p className="item-desc">{item.shortDesc}</p>
-                    <p className="item-price">{item.price}</p>
+                    <p className="item-price">{item.price}$</p>
                     <button className="outline-btn">View Details</button>
                   </div>
                 </article>
