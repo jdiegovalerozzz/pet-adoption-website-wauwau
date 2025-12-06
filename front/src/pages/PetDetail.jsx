@@ -145,7 +145,7 @@ export default function PetDetail() {
                 <strong>Raza:</strong> {pet.breed || "Desconocida"}
               </div>
               <div>
-                <strong>Edad:</strong> {pet.age}
+                <strong>Edad:</strong> {pet.age} Años
               </div>
               <div>
                 <strong>Género:</strong> {pet.sex}
@@ -174,7 +174,7 @@ export default function PetDetail() {
               >
                 Adoptar
               </button>
-              <button className="outline-btn">Contactar</button>
+              {/* <button className="outline-btn">Contactar</button> */}
             </div>
           </div>
         </section>
