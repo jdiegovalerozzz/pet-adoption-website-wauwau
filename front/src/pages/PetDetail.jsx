@@ -4,7 +4,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import api from "../api";
-import { PETS } from "../data/pets"; // fallback
 
 import "../styles/base.css";
 import "../styles/navbar.css";
@@ -14,8 +13,6 @@ import "../styles/footer.css";
 export default function PetDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const localPet = PETS ? PETS.find((p) => p.id === Number(id)) : undefined;
 
   const [petReal, setPetReal] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,9 +42,11 @@ export default function PetDetail() {
         if (mounted) setLoading(false);
       }
     }
-  }, [id, localPet]);
+    load();
+  }, [id]);
 
-  const pet = localPet || petReal;
+  // Use only the data from the backend
+  const pet = petReal;
 
   if (!pet && loading) {
     return (
