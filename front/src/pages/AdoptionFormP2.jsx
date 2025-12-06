@@ -58,19 +58,20 @@ const AdoptFormPage2 = () => {
     try {
       // Map front-end field names to the backend DB/validator fields
       const payload = {
-        nombre_contacto: formData.nombres || null,
-        apellido_contacto: formData.apellidos || null,
-        correo_contacto: formData.correoPrincipal || null,
-        correo_secundario: formData.correoSecundario || null,
-        telefono_contacto: formData.telefonoPrincipal || null,
-        telefono_secundario: formData.telefonoSecundario || null,
-        direccion_contacto: formData.direccion || null,
-        condiciones_hogar: answers.descripcionHogar || null,
-        estado: formData.estado || null,
-        ciudad: formData.ciudad || null,
-        codigo_postal: formData.codigoPostal || null,
-        conyuge: formData.companero || null,
-        adoption_timeline: answers.prontoAdoptar || null,
+        // strings: send empty string instead of null so validators like isString pass
+        nombre_contacto: formData.nombres || "",
+        apellido_contacto: formData.apellidos || "",
+        correo_contacto: formData.correoPrincipal || "",
+        correo_secundario: formData.correoSecundario || "",
+        telefono_contacto: formData.telefonoPrincipal || "",
+        telefono_secundario: formData.telefonoSecundario || "",
+        direccion_contacto: formData.direccion || "",
+        condiciones_hogar: answers.descripcionHogar || "",
+        estado: formData.estado || "",
+        ciudad: formData.ciudad || "",
+        codigo_postal: formData.codigoPostal || "",
+        conyuge: formData.companero || "",
+        adoption_timeline: answers.prontoAdoptar || "",
         familiarity_level: answers.familiaridad ? Number(answers.familiaridad) : null,
         household_composition: Array.isArray(answers.espacioCompartido) ? answers.espacioCompartido : [],
         // Compatibility fields expected by validator
