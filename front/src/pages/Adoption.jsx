@@ -27,7 +27,7 @@ export default function Adoption() {
   const speciesOptions = ["Todos", "Perro", "Gato"];
   const sizeOptions = ["Todos", "Pequeño", "Mediano", "Grande"];
   const ageOptions = ["Todos", "Cachorro", "Adulto", "Senior"];
-  const sexOptions = ["Todos", "Macho", "Hembra"];
+  const sexOptions = ["Todos", "macho", "hembra"];
 
   useEffect(() => {
     let mounted = true;
