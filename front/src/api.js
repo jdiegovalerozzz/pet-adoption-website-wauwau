@@ -1,4 +1,4 @@
-const BASE = ''; // rutas relativas
+const BASE = import.meta.env.VITE_API_BASE || 'https://pet-adoption-website-wauwau.onrender.com';
 
 async function request(path, opts = {}) {
   const res = await fetch(`${BASE}${path}`, {
