@@ -73,9 +73,11 @@ const AdoptFormPage2 = () => {
         adoption_timeline: answers.prontoAdoptar || null,
         familiarity_level: answers.familiaridad ? Number(answers.familiaridad) : null,
         household_composition: Array.isArray(answers.espacioCompartido) ? answers.espacioCompartido : [],
-        // Keep the original small flags for validator compatibility
-        mayorEdad: answers.mayorEdad || null,
-        terminos: answers.terminos || false,
+        // Compatibility fields expected by validator
+        // `is_adult` should be boolean (true if user certified adult)
+        is_adult: answers.mayorEdad ? (answers.mayorEdad === "Sí" || answers.mayorEdad === "true" || answers.mayorEdad === "1") : null,
+        // `accept_terms` should be boolean (true when checkbox is checked)
+        accept_terms: Boolean(answers.terminos),
       };
 
       const res = await api.createAdoptionRequest(petId, payload);
