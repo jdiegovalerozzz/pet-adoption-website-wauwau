@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 const petsRouter = require('./routes/pets');
 const sellsRouter = require('./routes/sells');
@@ -6,6 +7,7 @@ const servicesRouter = require('./routes/services');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/pets', petsRouter);
 app.use('/api/sells', sellsRouter);
