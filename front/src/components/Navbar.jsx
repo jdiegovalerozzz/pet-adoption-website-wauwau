@@ -13,9 +13,10 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`} role="banner">
       <div className="nav-inner">
         <div className="nav-left">
-          {/* Logo placeholder: pon aquí tu SVG/PNG con el nombre exacto logo-wauwau.svg */}
+
           <a href="/" className="logo-link" aria-label="Inicio - Wau Wau">
             <img src="/assets/logo-wauwau.jpg" alt="Wau Wau" className="logo-img" />
+            <span className="logo-title">wauwau</span>
           </a>
         </div>
 
