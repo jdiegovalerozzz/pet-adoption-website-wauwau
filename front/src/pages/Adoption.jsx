@@ -25,7 +25,7 @@ export default function Adoption() {
   const [error, setError] = useState(null);
 
   const speciesOptions = ["Todos", "Perro", "Gato"];
-  const sizeOptions = ["Todos", "Pequeño", "Mediano", "Grande"];
+  // const sizeOptions = ["Todos", "Pequeño", "Mediano", "Grande"];
   const ageOptions = ["Todos", "Cachorro", "Adulto", "Senior"];
   const sexOptions = ["Todos", "Macho", "Hembra"];
 
@@ -120,7 +120,7 @@ export default function Adoption() {
                   </select>
                 </label>
 
-                <label>
+                {/* <label>
                   <span>Tamaño</span>
                   <select
                     value={size}
@@ -135,7 +135,7 @@ export default function Adoption() {
                       </option>
                     ))}
                   </select>
-                </label>
+                </label> */}
 
                 <label>
                   <span>Edad</span>
