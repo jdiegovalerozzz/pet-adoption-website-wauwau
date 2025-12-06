@@ -16,9 +16,15 @@ async function getPet(req, res, next) {
   const petQ = await db.query(queries.SELECT_PET_BY_ID, [petId]);
     if (petQ.rowCount === 0) return res.status(404).json({ error: 'Pet not found' });
 
-  const imagesQ = await db.query(queries.SELECT_PET_IMAGES, [petId]);
     const pet = petQ.rows[0];
-    pet.fotos = imagesQ.rows.map(r => ({ orden: r.orden, url: r.url }));
+
+    // Return only the main image (same as used in listPets) as the sole
+    // entry in `pet.fotos`.
+    const fotos = [];
+    if (pet.foto_url) {
+      fotos.push({ orden: 0, url: pet.foto_url });
+    }
+    pet.fotos = fotos;
     res.json(pet);
   } catch (err) {
     next(err);
