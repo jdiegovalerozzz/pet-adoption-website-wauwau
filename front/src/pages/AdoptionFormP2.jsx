@@ -27,6 +27,8 @@ const AdoptFormPage2 = () => {
   });
 
   const [sending, setSending] = useState(false);
+  const [serverErrors, setServerErrors] = useState([]);
+  const [success, setSuccess] = useState(null);
 
   const handleRadio = (e) => {
     setAnswers({ ...answers, [e.target.name]: e.target.value });
@@ -44,8 +46,49 @@ const AdoptFormPage2 = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerErrors([]);
+    setSuccess(null);
+    if (!petId) {
+      setServerErrors([{ msg: "Pet id no proporcionado" }]);
+      return;
+    }
+    setSending(true);
+    try {
+      // Map front-end field names to the backend DB/validator fields
+      const payload = {
+        nombre_contacto: formData.nombres || null,
+        apellido_contacto: formData.apellidos || null,
+        correo_contacto: formData.correoPrincipal || null,
+        correo_secundario: formData.correoSecundario || null,
+        telefono_contacto: formData.telefonoPrincipal || null,
+        telefono_secundario: formData.telefonoSecundario || null,
+        direccion_contacto: formData.direccion || null,
+        condiciones_hogar: answers.descripcionHogar || null,
+        estado: formData.estado || null,
+        ciudad: formData.ciudad || null,
+        codigo_postal: formData.codigoPostal || null,
+        conyuge: formData.companero || null,
+        adoption_timeline: answers.prontoAdoptar || null,
+        familiarity_level: answers.familiaridad ? Number(answers.familiaridad) : null,
+        household_composition: Array.isArray(answers.espacioCompartido) ? answers.espacioCompartido : [],
+        // Keep the original small flags for validator compatibility
+        mayorEdad: answers.mayorEdad || null,
+        terminos: answers.terminos || false,
+      };
+
+      const res = await api.createAdoptionRequest(petId, payload);
+      setSuccess(res);
+    } catch (err) {
+      if (err && err.status === 400 && err.payload && Array.isArray(err.payload.errors)) {
+        setServerErrors(err.payload.errors);
+      } else {
+        setServerErrors([{ msg: err.message || "Error desconocido" }]);
+      }
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -196,6 +239,26 @@ const AdoptFormPage2 = () => {
           </div>
         </form>
       </div>
+        {serverErrors && serverErrors.length > 0 && (
+          <div className="form-errors container" style={{ marginTop: '1rem' }}>
+            <h4>Errores del formulario:</h4>
+            <ul>
+              {serverErrors.map((er, i) => (
+                <li key={i}>{er.msg || JSON.stringify(er)}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {success && (
+          <div className="form-success container" style={{ marginTop: '1rem' }}>
+            <h3>Solicitud enviada</h3>
+            <p>Tu solicitud fue creada con id: {success.id_solicitud}</p>
+            <button className="cta-btn" onClick={() => navigate('/adopt')}>
+              Volver a Adopciones
+            </button>
+          </div>
+        )}
       <Footer />
     </div>
   );
