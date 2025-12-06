@@ -145,7 +145,7 @@ export default function PetDetail() {
                 <strong>Raza:</strong> {pet.breed || "Desconocida"}
               </div>
               <div>
-                <strong>Edad:</strong> {pet.age} Años
+                <strong>Edad:</strong> {pet.age}
               </div>
               <div>
                 <strong>Género:</strong> {pet.sex}
