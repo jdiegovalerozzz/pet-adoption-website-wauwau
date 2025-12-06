@@ -1,4 +1,6 @@
-const BASE = import.meta.env.VITE_API_BASE || 'https://pet-adoption-website-wauwau.onrender.com';
+// Prefer same-origin requests so Vercel rewrites/proxy can forward `/api/*` to the real backend.
+// If you explicitly set `VITE_API_BASE` in Vercel env vars, that will be used instead.
+const BASE = import.meta.env.VITE_API_BASE ?? '';
 
 async function request(path, opts = {}) {
   const res = await fetch(`${BASE}${path}`, {
