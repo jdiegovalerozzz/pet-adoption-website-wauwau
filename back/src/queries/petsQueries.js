@@ -8,13 +8,13 @@ ORDER BY fecha_ingreso DESC
 `;
 
 const LIST_PRODUCTS = `
-SELECT id_producto, nombre, descripcion, categoria
+SELECT id_producto, nombre, descripcion, categoria, precio, imagen_url
 FROM producto
 ORDER BY nombre
 `;
 
 const SELECT_PRODUCTS_BY_ID = `
-SELECT id_producto, nombre, descripcion, categoria
+SELECT id_producto, nombre, descripcion, categoria, precio, imagen_url
 FROM producto
 WHERE id_producto = $1
 `;
